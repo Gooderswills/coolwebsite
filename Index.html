@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>To Charlotte ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-pink: #ff4d6d;
+            --soft-pink: #fff0f3;
+            --check-green: #4CAF50;
+            --envelope-color: #ff8fa3;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--soft-pink);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .heart-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .heart {
+            position: absolute;
+            color: var(--primary-pink);
+            font-size: 20px;
+            top: -20px;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(105vh) rotate(360deg); }
+        }
+
+        /* --- ENVELOPE --- */
+        #envelope-wrapper {
+            position: relative;
+            width: 250px;
+            height: 180px;
+            background: var(--envelope-color);
+            border-radius: 0 0 10px 10px;
+            cursor: pointer;
+            z-index: 50;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            transition: transform 0.5s;
+        }
+
+        #envelope-wrapper::before { 
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 0;
+            height: 0;
+            border-left: 125px solid transparent;
+            border-right: 125px solid transparent;
+            border-top: 100px solid #ffb3c1;
+            transform-origin: top;
+            transition: transform 0.5s;
+            z-index: 2;
+        }
+
+        .envelope-opened::before {
+            transform: rotateX(180deg);
+            z-index: 0 !important;
+        }
+
+        .heart-seal {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 40px;
+            z-index: 10;
+        }
+
+        .tap-text {
+            position: absolute;
+            bottom: -50px;
+            width: 100%;
+            text-align: center;
+            font-family: 'Pacifico';
+            color: var(--primary-pink);
+            font-size: 1.5rem;
+        }
+
+        /* --- CARDS --- */
+        .card {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 35px;
+            box-shadow: 0 15px 40px rgba(255, 77, 109, 0.15);
+            text-align: center;
+            width: 85%;
+            max-width: 400px;
+            display: none;
+            z-index: 100;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        h1 { font-family: 'Pacifico', cursive; color: var(--primary-pink); font-size: 1.6rem; margin: 5px 0; }
+        .btn-wrap { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
+        .btn { padding: 12px 30px; border: none; border-radius: 50px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+        #yesBtn { background-color: var(--check-green); color: white; }
+        #noBtn { background-color: var(--primary-pink); color: white; }
+
+        .memory-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 15px 0;
+        }
+        .memory-item {
+            background: var(--soft-pink);
+            padding: 12px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 1px solid #ffdde4;
+            height: 55px;
+            justify-content: center;
+        }
+
+        .vibe-option {
+            background: #f8f8f8;
+            border: 2px solid #eee;
+            border-radius: 15px;
+            padding: 15px;
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+        .vibe-option.selected {
+            border-color: var(--primary-pink);
+            background: var(--soft-pink);
+        }
+
+        .checkbox-container { text-align: left; margin: 10px 0; max-height: 250px; overflow-y: auto; }
+        .check-item {
+            display: flex;
+            align-items: center;
+            background: #fdfdfd;
+            margin-bottom: 8px;
+            padding: 10px;
+            border-radius: 12px;
+            border: 2px solid #eee;
+            cursor: pointer;
+        }
+        .check-item input { display: none; }
+        .custom-check {
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--primary-pink);
+            border-radius: 6px;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .check-item input:checked + .custom-check { background: var(--primary-pink); }
+        .check-item input:checked + .custom-check::after { content: '✓'; color: white; font-size: 12px; }
+
+        .submit-btn { background-color: var(--primary-pink); color: white; width: 100%; padding: 12px; border-radius: 50px; border: none; font-size: 1rem; font-weight: 600; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <div id="heart-layer" class="heart-container"></div>
+
+    <div id="envelope-wrapper" onclick="openEnvelope()">
+        <div class="heart-seal">❤️</div>
+        <div class="tap-text">To Charlotte...</div>
+    </div>
+
+    <div class="card" id="askingCard">
+        <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueGZ6bmZueGZ6bmZueGZ6bmZueGZ6bmZueGZ6bmZueGZ6bmZueCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/cLS1cfxvGOPVpf9g3y/giphy.gif" style="width:140px; border-radius:20px;">
+        <h1>Charlotte, will you be my Valentine?</h1>
+        <div class="btn-wrap">
+            <button class="btn" id="yesBtn" onclick="acceptValentine()">Yes</button>
+            <button class="btn" id="noBtn" onclick="handleNo()">No</button>
+        </div>
+    </div>
+
+    <div class="card" id="memoryCard">
+        <h2 style="font-family: 'Pacifico'; color: var(--primary-pink); font-size: 1.3rem;">Things I Love About you</h2>
+        <div class="memory-grid">
+            <div class="memory-item"><span>🎭</span>Going to drama</div>
+            <div class="memory-item"><span>🧹</span>Going to see Wicked</div>
+            <div class="memory-item"><span>🎡</span>Winter Wonderland</div>
+            <div class="memory-item"><span>💬</span>Texting each other</div>
+        </div>
+        <p style="color:var(--primary-pink); font-style:italic;">...and much much more ❤️</p>
+        <button class="submit-btn" onclick="nextPage('memoryCard', 'vibeCard')">Next ✨</button>
+    </div>
+
+    <div class="card" id="vibeCard">
+        <h2 style="font-family: 'Pacifico'; color: var(--primary-pink);">The Perfect Afternoon</h2>
+        <p style="font-size: 0.8rem; color: #666; margin-bottom: 20px;">What do you prefer?</p>
+        
+        <div class="vibe-option" onclick="selectVibe(this, 'Food', 'Sweet')">
+            <span style="font-weight:600;">🍩 Sweet Treats</span><span>🍭</span>
+        </div>
+        <div class="vibe-option" onclick="selectVibe(this, 'Food', 'Savory')">
+            <span style="font-weight:600;">🍕 Savory Snacks</span><span>🍟</span>
+        </div>
+        
+        <hr style="border:0; border-top:1px solid #eee; margin:15px 0;">
+
+        <div class="vibe-option" onclick="selectVibe(this, 'Mood', 'Chill')">
+            <span style="font-weight:600;">🌙 Chill Night</span><span>🧸</span>
+        </div>
+        <div class="vibe-option" onclick="selectVibe(this, 'Mood', 'Adventure')">
+            <span style="font-weight:600;">🚀 Adventure</span><span>🎢</span>
+        </div>
+
+        <button class="submit-btn" style="margin-top: 15px;" onclick="nextPage('vibeCard', 'mixerCard')">Next ➡️</button>
+    </div>
+
+    <div class="card" id="mixerCard">
+        <h2 style="margin-bottom: 5px;">Plan Our Date</h2>
+        <form id="valentineForm" onsubmit="submitForm(event)">
+            <input type="hidden" name="She_Said" value="YES! ❤️">
+            <input type="hidden" name="Vibe_Food" id="inputFood" value="Not Chosen">
+            <input type="hidden" name="Vibe_Mood" id="inputMood" value="Not Chosen">
+
+            <div class="checkbox-container">
+                <label class="check-item"><input type="checkbox" name="DateIdea" value="Aquarium"><div class="custom-check"></div><span>🐠 Aquarium</span></label>
+                <label class="check-item"><input type="checkbox" name="DateIdea" value="Arcade"><div class="custom-check"></div><span>🕹️ Arcade</span></label>
+                <label class="check-item"><input type="checkbox" name="DateIdea" value="Dinner"><div class="custom-check"></div><span>🍝 Dinner</span></label>
+                <label class="check-item"><input type="checkbox" name="DateIdea" value="Cinema"><div class="custom-check"></div><span>🍿 Cinema</span></label>
+                <label class="check-item"><input type="checkbox" name="DateIdea" value="Pottery"><div class="custom-check"></div><span>🏺 Pottery</span></label>
+                <label class="check-item"><input type="checkbox" name="DateIdea" value="Bowling"><div class="custom-check"></div><span>🎳 Bowling</span></label>
+            </div>
+            <button type="submit" id="finalSubmitBtn" class="submit-btn">Send My Choice 💌</button>
+        </form>
+    </div>
+
+    <div class="card" id="successCard">
+        <div style="font-size:50px;">🎉</div>
+        <h1>It's a Date!</h1>
+        <img src="https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif" style="width:100%; margin-top:15px; border-radius:15px;">
+        <p style="font-size: 0.8rem; color: #888; margin-top: 10px;">Love you ❤️</p>
+    </div>
+
+    <script>
+        function openEnvelope() {
+            document.getElementById('envelope-wrapper').classList.add('envelope-opened');
+            setTimeout(() => {
+                document.getElementById('envelope-wrapper').style.display = 'none';
+                document.getElementById('askingCard').style.display = 'block';
+            }, 600);
+        }
+
+        function nextPage(current, next) {
+            document.getElementById(current).style.display = 'none';
+            document.getElementById(next).style.display = 'block';
+        }
+
+        function acceptValentine() { startHearts(); nextPage('askingCard', 'memoryCard'); }
+
+        let noCount = 0;
+        function handleNo() {
+            noCount++;
+            const yesBtn = document.getElementById('yesBtn');
+            const noBtn = document.getElementById('noBtn');
+            let currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
+            yesBtn.style.fontSize = (currentSize * 1.4) + 'px';
+            const texts = ["Really Charlotte?", "Are you sure?", "Charlotte please...", "Just say yes!"];
+            noBtn.innerText = texts[Math.min(noCount-1, texts.length-1)];
+            if(noCount > 4) noBtn.style.display = 'none';
+        }
+
+        function selectVibe(el, cat, val) {
+            el.parentElement.querySelectorAll(`div[onclick*="'${cat}'"]`).forEach(item => item.classList.remove('selected'));
+            el.classList.add('selected');
+            document.getElementById('input' + cat).value = val;
+        }
+
+        function submitForm(event) {
+            event.preventDefault();
+            const btn = document.getElementById('finalSubmitBtn');
+            btn.innerText = "Sending...";
+            btn.disabled = true;
+
+            fetch("https://formspree.io/f/xzdvpdvv", {
+                method: "POST",
+                body: new FormData(document.getElementById('valentineForm')),
+                headers: { 'Accept': 'application/json' }
+            }).then(() => nextPage('mixerCard', 'successCard'));
+        }
+
+        function startHearts() {
+            setInterval(() => {
+                const heart = document.createElement("div");
+                heart.innerHTML = "❤️";
+                heart.classList.add("heart");
+                heart.style.left = Math.random() * 100 + "vw";
+                heart.style.animationDuration = Math.random() * 3 + 2 + "s";
+                document.getElementById('heart-layer').appendChild(heart);
+                setTimeout(() => heart.remove(), 5000);
+            }, 400);
+        }
+    </script>
+</body>
+</html>
